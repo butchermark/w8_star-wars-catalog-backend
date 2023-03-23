@@ -6,15 +6,13 @@ import * as users from '../users/users.json';
 @Injectable()
 export class AuthService {
   constructor(private jwtService: JwtService) {}
-  signinLocal(dto: AuthDto) {
+  async signinLocal(dto: AuthDto) {
     const user = users.find((_user) => _user.username === dto.username);
     if (!user) throw new UnauthorizedException('User does not exists');
     if (user.password !== dto.password)
       throw new UnauthorizedException('Password does not match');
     return this.signUser(user.id, user.username, 'user');
   }
-
-  signupLocal(dto: AuthDto) {}
 
   signUser(userId: number, username: string, type: string) {
     return {
